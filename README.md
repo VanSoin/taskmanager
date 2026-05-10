@@ -29,9 +29,10 @@ This project follows a layered architecture:
 | Method | Endpoint | Description |
 |--------|----------|-------------|
 | GET | /tasks | Get all tasks |
+| GET | /tasks/{id} | Get task by ID |
 | POST | /tasks | Create a new task |
-| PUT | /tasks/{id} | Update a task (coming soon) |
-| DELETE | /tasks/{id} | Delete a task (coming soon) |
+| PUT | /tasks/{id} | Update a task |
+| DELETE | /tasks/{id} | Delete a task |
 
 ## Testing with Postman
 Example POST /tasks request body:
@@ -39,6 +40,13 @@ Example POST /tasks request body:
     "title": "Buy groceries",
     "description": "Milk, eggs, bread",
     "completed": false
+}
+
+Example PUT /tasks/1 request body:
+{
+    "title": "Buy groceries UPDATED",
+    "description": "Milk, eggs, bread, butter",
+    "completed": true
 }
 
 ## How To Run Locally
@@ -59,3 +67,8 @@ Example POST /tasks request body:
    JDBC URL: jdbc:h2:mem:taskmanager
    Username: sa
    Password: (empty)
+
+## Note
+Currently using H2 in-memory database for development.
+Data resets every time the application restarts.
+PostgreSQL integration coming soon.
