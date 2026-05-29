@@ -6,17 +6,20 @@ A RESTful API built with Java and Spring Boot for managing tasks.
 - Java 21
 - Spring Boot 3.5
 - Spring Data JPA
-- H2 Database (development)
+- PostgreSQL (production database)
 - Maven
 - Lombok
 
 ## Project Structure
 src/main/java/com/vanshika/taskmanager/
-├── Task.java                    # Entity model
-├── TaskRepository.java          # Database layer
-├── TaskService.java             # Business logic layer
-├── TaskController.java          # REST API layer
-└── TaskmanagerApplication.java  # Entry point
+├── Task.java                      # Entity model
+├── TaskRepository.java            # Database layer
+├── TaskService.java               # Business logic layer
+├── TaskController.java            # REST API layer
+├── ResourceNotFoundException.java # Custom exception
+├── GlobalExceptionHandler.java    # Global error handling
+├── ErrorResponse.java             # Error response structure
+└── TaskmanagerApplication.java    # Entry point
 
 ## Architecture
 This project follows a layered architecture:
@@ -24,15 +27,23 @@ This project follows a layered architecture:
 - Service → business logic
 - Repository → database operations
 - Model → data structure
+- Exception Handling → global error handling with proper HTTP status codes
 
 ## API Endpoints
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | /tasks | Get all tasks |
-| GET | /tasks/{id} | Get task by ID |
-| POST | /tasks | Create a new task |
-| PUT | /tasks/{id} | Update a task |
-| DELETE | /tasks/{id} | Delete a task |
+| Method | Endpoint | Description | Status Codes |
+|--------|----------|-------------|--------------|
+| GET | /tasks | Get all tasks | 200 |
+| GET | /tasks/{id} | Get task by ID | 200, 404 |
+| POST | /tasks | Create a new task | 200 |
+| PUT | /tasks/{id} | Update a task | 200, 404 |
+| DELETE | /tasks/{id} | Delete a task | 200 |
+
+## Error Response Format
+{
+    "status": 404,
+    "message": "Task not found with id: 999",
+    "timestamp": "2026-05-10T..."
+}
 
 ## Testing with Postman
 Example POST /tasks request body:
@@ -50,25 +61,28 @@ Example PUT /tasks/1 request body:
 }
 
 ## How To Run Locally
+
+### Prerequisites
+- Java 21
+- Maven
+- PostgreSQL running locally
+
+### Steps
 1. Clone the repo
    git clone https://github.com/VanSoin/taskmanager.git
 
-2. Navigate to project
-   cd taskmanager
+2. Create PostgreSQL database
+   CREATE DATABASE taskmanager;
 
-3. Run the app
+3. Update application.properties with your PostgreSQL password
+
+4. Navigate to project and run
+   cd taskmanager
    ./mvnw spring-boot:run (Git Bash)
 
-4. App runs on port 8081
+5. App runs on port 8081
    http://localhost:8081/tasks
 
-5. Access H2 database console
-   http://localhost:8081/h2-console
-   JDBC URL: jdbc:h2:mem:taskmanager
-   Username: sa
-   Password: (empty)
-
 ## Note
-Currently using H2 in-memory database for development.
-Data resets every time the application restarts.
-PostgreSQL integration coming soon.
+Data persists across restarts using PostgreSQL.
+Previously used H2 in-memory database for development.
