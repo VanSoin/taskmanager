@@ -16,14 +16,19 @@ public class TaskService {
     }
     public Task updateTask(Long id, Task updatedTask) {
     Task existing = taskRepository.findById(id)
-        .orElseThrow(() -> new RuntimeException("Task not found with id: " + id));
+        .orElseThrow(() -> new ResourceNotFoundException("Task not found with id: " + id));
     existing.setTitle(updatedTask.getTitle());
     existing.setDescription(updatedTask.getDescription());
     existing.setCompleted(updatedTask.isCompleted());
     return taskRepository.save(existing);
-    }
+}
 
     public void deleteTask(Long id) {
     taskRepository.deleteById(id);
    }
+   public Task getTaskById(Long id) {
+    return taskRepository.findById(id)
+        .orElseThrow(() -> new ResourceNotFoundException("Task not found with id: " + id));
+   }
 }
+
