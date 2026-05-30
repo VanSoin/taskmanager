@@ -1,6 +1,7 @@
 package com.vanshika.taskmanager;
 
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -19,11 +20,11 @@ public class TaskController {
     }
 
     @PostMapping
-    public Task createTask(@RequestBody Task task) {
+    public Task createTask(@Valid @RequestBody Task task) {
         return taskService.createTask(task);
     }
     @PutMapping("/{id}")
-    public Task updateTask(@PathVariable Long id, @RequestBody Task task) {
+    public Task updateTask(@PathVariable Long id, @Valid @RequestBody Task task) {
     return taskService.updateTask(id, task);
     }
 
